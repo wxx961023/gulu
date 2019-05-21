@@ -1,14 +1,49 @@
 <template>
-  <button class="g-button">按钮</button>
+  <button class="g-button" 
+  :class="{[`icon-${iconPosition}`]:true}"
+    @click="$emit('click')"
+  >
+    <g-icon v-if="icon && !loading" :name="icon" class="icon"></g-icon>
+
+    <g-icon class="loading icon" v-show="loading" name="loading"></g-icon>
+    <div class="content">
+      <slot></slot>
+    </div>
+  </button>
 </template>
 
 <script>
+import Icon from './icon.vue'
 export default {
-
+  // props:['icon','iconPosition']
+  components:{
+    'g-icon':Icon
+  },
+  props:{
+    icon:{},
+    loading:{
+      type:Boolean,
+      default:false
+    },
+    iconPosition:{
+      type:String,
+      default:'left',
+      validator(value){
+        return value === 'left' || value === 'right'
+      }
+    }
+  },
 }
 </script>
 
 <style lang="scss">
+  @keyframes spin{
+    0% {transform: rotate(0deg);}
+    100% {transform: rotate(360deg);}
+  }
+  .loading{
+    animation:spin 1.5s infinite linear
+  }
   .g-button{
     font-size: var(--font-size);
     height: var(--button-height);
