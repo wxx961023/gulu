@@ -1,6 +1,6 @@
 {
   "name": "brazen-sec",
-  "version": "0.0.2",
+  "version": "0.0.13",
   "description": "这是一个UI框架",
   "main": "dist/index.js",
   "scripts": {
@@ -44,5 +44,8 @@
   },
   "alias": {
     "vue": "./node_modules/vue/dist/vue.common.js"
+  },
+  "directories": {
+    "test": "test"
   }
 }
