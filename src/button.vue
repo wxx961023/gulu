@@ -15,6 +15,7 @@
 <script>
 import Icon from './icon.vue'
 export default {
+  name:'GuluButton',
   // props:['icon','iconPosition']
   components:{
     'g-icon':Icon
