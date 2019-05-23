@@ -16,6 +16,12 @@ new Vue({
     loading2:true,
     loading3:false
   },
+  methods: {
+    changeInput(e){
+      console.log(1);
+      console.log(e.target.value);
+    }
+  },
 })
 
 // //单元测试
