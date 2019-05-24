@@ -39,6 +39,20 @@
         }
       }
     },
+    methods: {
+      createClasses (obj,str = ''){
+        let array = []
+        if(!obj){return []} //如果pc没写，就是 undfined ,没办法获取 undfined 的属性
+        if(obj.span){
+          array.push(`col-${str}${obj.span}`)
+          console.log(obj.span);
+        }
+        if(obj.offset){
+          array.push(`offset-${str}${obj.offset}`)
+        }
+        return array
+      }
+    },
     computed: {
       colStyle(){
         let {gutter} = this
@@ -46,13 +60,13 @@
       },
       colClass(){
         let {span,offset,ipad,narrowPc,pc,widePc} = this
+        let createClasses = this.createClasses
         return [
-          span && `col-${span}`,
-          offset && `offset-${offset}`,
-          ...(ipad ? [`col-ipad-${ipad.span}`]:[]),
-          ...(narrowPc ? [`col-narrow-pc-${narrowPc.span}`]:[]),
-          ...(pc ? [`col-pc-${pc.span}`]:[]),
-          ...(widePc ? [`col-wide-pc-${widePc.span}`]:[]),
+          ...createClasses({span,offset}),
+          ...createClasses(ipad,'ipad-'),
+          ...createClasses(narrowPc,'narrow-pc-'),
+          ...createClasses(pc,'pc-'),
+          ...createClasses(widePc,'wide-pc-'),
         ]
       }
     },
