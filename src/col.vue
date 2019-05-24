@@ -1,8 +1,6 @@
 <template>
-  <div class="col" :class="[span&&`col-${span}`,offset && `offset-${offset}`]" 
-    :style="{paddingLeft:gutter/2+'px',paddingRight:gutter/2+'px'}"
-  >
-    <div style="border:1px solid pink;height:100%">
+  <div class="col" :class="colClass" :style="colStyle" >
+    <div style="border:1px solid red">
       <slot></slot>
     </div>
   </div>
@@ -26,17 +24,23 @@
         }
       }
     },
+    computed: {
+      colStyle(){
+        let {gutter} = this
+        return {paddingLeft:gutter/2+'px',paddingRight:gutter/2+'px'}
+      },
+      colClass(){
+        let {span,offset} = this
+        return [span && `col-${span}`,offset && `offset-${offset}`]
+      }
+    },
   }
+    
 </script>
 
 <style scoped lang="scss">
   .col{
-    height: 100px;
-    // background: grey;
-    // padding: 0 10px;
-    width: 50%;
-    // border:1px solid red;
-
+    // width: 50%;
     $class-prefix:col-;
     @for $n from 1 through 24{
       &.#{$class-prefix}#{$n}{
