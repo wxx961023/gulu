@@ -22,7 +22,7 @@ describe('Row', () => {
       </g-row>
     `
     const vm = new Vue({
-      el:'div'
+      el: div
     })
     setTimeout(()=>{ 
       const row = vm.$el.querySelector('.row')
