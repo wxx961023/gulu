@@ -37,11 +37,12 @@ new Vue({
     message:'hi'
   },
   created(){
-
+    this.$toast('子很',{
+      enableHtml:true,
+    })
   },
   methods: {
-    showToast(message){
-      this.$toast('我是message')
+    showToast(){
     },
   },
 })
