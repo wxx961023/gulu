@@ -18,29 +18,22 @@
     --border-color:#999;
     --border-color-hover:#666;
   } 
-  #app{
-    margin: 20px;
-  }
-  body{
-    font-size: var(--font-size)
-  }
-  .box{
-    margin: 20px 0;
-  }
   .demo{
-    background: #ddd;
-    border: 1px solid pink;
-    height: 50px;
+    min-height: 100px;
+    border: 1px solid green;
   }
 </style>
 
 <body>
   <div id="app">
-    <g-row>
-      <g-col span="24" :ipad="{span:12}" :narrow-pc="{span:8}">
-        <div class="demo"></div>
-      </g-col>
-    </g-row>
+    <g-layout style="height: 100vh;">
+      <g-sider class="demo">sider</g-sider>
+      <g-layout>
+        <g-header class="demo">header</g-header>
+        <g-content class="demo">content</g-content>
+        <g-footer class="demo">footer</g-footer>
+      </g-layout>
+    </g-layout>
   </div>
   <script src="./src/app.js"></script>
   <!-- <script src="//at.alicdn.com/t/font_1199663_prkpsfjgy5e.js"></script> -->
