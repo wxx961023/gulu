@@ -28,7 +28,6 @@ export default {
   .layout{
     display: flex;
     flex-grow: 1;
-    border: 1px solid red;
     flex-flow: column;
     &.hasSider{
       flex-direction:row;
