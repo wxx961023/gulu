@@ -12,6 +12,15 @@ import Layout from './layout.vue'
 import Sider from './sider.vue'
 import Toast from './toast.vue'
 import Plugin from './plugin.js'
+import Tabs from './tabs'
+import TabsHead from './tabs-head'
+import TabsBody from './tabs-body'
+import TabsItem from './tabs-item'
+import TabsPane from './tabs-pane'
+
+
+
+
 
 Vue.component('g-button',Button)
 Vue.component('g-icon',Icon)
@@ -26,15 +35,17 @@ Vue.component('g-layout',Layout)
 Vue.component('g-sider',Sider)
 Vue.component('g-toast',Toast)
 Vue.use(Plugin)
+Vue.component('g-tabs',Tabs)
+Vue.component('g-tabs-head',TabsHead)
+Vue.component('g-tabs-body',TabsBody)
+Vue.component('g-tabs-item',TabsItem)
+Vue.component('g-tabs-pane',TabsPane)
 
 
 new Vue({
   el:'#app',
   data:{
-    loading1:false,
-    loading2:true,
-    loading3:false,
-    message:'hi'
+    selectedTab:'woman'
   },
   created(){
   },
@@ -43,19 +54,6 @@ new Vue({
     showToast2(){ this.showToast('middle') },
     showToast3(){ this.showToast('bottom') },
 
-    showToast(position){
-      this.$toast('你的智商需要充值',{
-        position,
-        enableHtml:false,
-        closeButton:{
-          text:'已充值',
-          callback(){
-            console.log('他说已经充值了')
-          }
-        },
-        autoClose: false,
-        closeTime:3
-      })
-    },
+    
   },
 })
