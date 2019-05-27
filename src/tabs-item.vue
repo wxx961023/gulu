@@ -1,5 +1,5 @@
 <template>
-  <div class="tabs-item" @click="xxx">
+  <div class="tabs-item" @click="xxx" :class="classes" >
     <slot></slot>
   <div>
 </template>
@@ -25,17 +25,19 @@ export default {
   },
   created() {
     this.eventBus.$on('update:selected',(name)=>{
-      if(name === this.name){
-        console.log(`我${this.name}被选中了`);
-      }else{
-        console.log(`我${this.name}没被选中`);
-      }
-      
+      this.active = name === this.name
     })
+  },
+  computed:{
+    classes(){
+      return {
+        active:this.active
+      }
+    }
   },
   methods:{
     xxx(){
-     
+      this.eventBus.$emit('update:selected',this.name)
     }
   }
 }
@@ -44,6 +46,9 @@ export default {
 <style lang='scss' scoped>
   .tabs-item{
     padding: 0 1em;
+    &.active{
+      background: red;
+    }
   
   }
 </style>

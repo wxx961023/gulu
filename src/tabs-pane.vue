@@ -1,5 +1,5 @@
 <template>
-  <div class="tabs-pane">
+  <div class="tabs-pane" :class="classes" v-show="active">
     <slot></slot>
   <div>
 </template>
@@ -13,15 +13,31 @@ export default {
       active:false
     }
   },
+  props:{
+    name:{
+      type:String | Number,
+      required: true,
+    }
+  },
   created(){
-    // this.eventBus.$on('update:selected',(name)=>{
-    // })
+    this.eventBus.$on('update:selected',(name)=>{
+      this.active = name === this.name
+    })
+  },
+  computed:{
+    classes(){
+      return{
+        active:this.active
+      }
+    }
   }
 }
 </script>
 
 <style lang='scss' scoped>
   .tabs-pane{
-
+    &.active{
+      background: pink;
+    }
   }
 </style>
