@@ -36,6 +36,10 @@ export default {
     }
   },
   mounted() {
+    if(this.$children.length === 0){
+      console && console.warn &&
+      console.warn('tabs的子组件应该是tabs-head和tas-body，但你没写子组件')
+    }
     this.$children.forEach(vm=>{
       if(vm.$options.name === 'GuluTabsHead'){
         vm.$children.forEach(childrenVm=>{
