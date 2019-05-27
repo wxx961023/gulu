@@ -1,6 +1,8 @@
 <template>
   <div class="tabs-head">
     <slot></slot>
+    <div class="line" ref="line" v-show="x"></div>
+    <!-- v-if 会控制 div 是否显示在DOM里 -->
     <div class="action-wrapper">
       <slot name="actions"></slot>
     </div>
@@ -10,26 +12,38 @@
 <script>
 export default {
   name:'GuluTabsHead',
-  inject:['eventBus'],
   data(){
-    return {
-
+    return{
+      x:false
     }
   },
-  created() {
+  inject:['eventBus'],
+  mounted() {
+    this.eventBus.$on('update:selected',(item,vm)=>{
+      this.x = true
+      //新增一个'更新UI任务'到任务队列中
+      let {width,left} = vm.$el.getBoundingClientRect();
+      this.$refs.line.style.width = `${width}px`
+      this.$refs.line.style.transform = `translateX(${left}px)`
+    })
   },
 }
 </script>
 
 <style lang='scss' scoped>
   $tab-height:40px;
+  $blue:#4FB0FF;
   .tabs-head{
     display: flex;
     justify-content: flex-start;
-    align-items: center;
-    border: 1px solid red;
     height: $tab-height;
-    vertical-align: center;
+    position: relative;
+    > .line{
+      bottom:0;
+      position: absolute;
+      border-bottom: 1px solid $blue; 
+      transition: all 0.35s
+    }
     > .action-wrapper{
       margin-left: auto;
       padding-right: .5em;

@@ -45,7 +45,7 @@ Vue.component('g-tabs-pane',TabsPane)
 new Vue({
   el:'#app',
   data:{
-    selectedTab:'woman'
+    selectedTab:'sports'
   },
   created(){
   },
