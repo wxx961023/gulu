@@ -3,7 +3,7 @@
     <div ref="contentWrapper" class="content-wrapper" v-if="visible">
       <slot name="content"></slot>
     </div>
-    <span ref="triggerWrapper">
+    <span ref="triggerWrapper" style="display:inline-block">
       <slot></slot>
     </span>
   <div>
@@ -28,8 +28,7 @@ export default {
       ){return}
       if(this.$refs.contentWrapper &&
         (this.$refs.contentWrapper === e.target || this.$refs.contentWrapper.contains(e.target))
-      ) { return }
-      console.log('你不应该看到这');
+      ){return}
       this.close()
     },
     open(){
@@ -45,13 +44,8 @@ export default {
     },
 
     onClick(event){
-      console.log(1);
       if(this.$refs.triggerWrapper.contains(event.target)){
-        if(this.visible === true){
-          this.close()
-        }else{
-          this.open()
-        }
+        this.visible === true?this.close():this.open()
       }
     }
   }
@@ -59,15 +53,41 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  $border-color:#333;
+  $border-radius:4px;
   .popover{
     display: inline-block;
     vertical-align:top;
     position: relative;
   }
   .content-wrapper{
+    position: absolute;
+    border: $border-color;
+    transform: translateY(-100%);
+    border-radius: $border-radius;
+    padding: 0.5em 1em;
+    background: white;
+    border: 1px solid black;
+    filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.5));
+    margin-top: -10px;
+    max-width: 20em;
+    word-break: break-all;
+    &::before,&::after{
+      content: '';
       position: absolute;
-      border: 1px solid pink;
-      transform: translateY(-100%);
-      box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.75)
+      display: block;
+      width: 0;
+      height: 0;
+      border: 10px solid transparent;
+      left: 10px;
+    }    
+    &::before{
+      border-top-color: black;
+      top: 100%;
     }
+    &::after{
+      border-top-color: white;
+      top: calc(100% - 1px);
+    }
+  }
 </style>
