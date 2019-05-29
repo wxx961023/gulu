@@ -1,6 +1,6 @@
 <template>
   <div class="collapseItem">
-    <div class="title" @click="toggle" :data-name="name">
+    <div class="title" @click="toggle">
       {{title}}
     </div>
     <div class="content" ref="content" v-if="open">
@@ -12,6 +12,7 @@
 <script>
 export default {
   name:'GuluCollapseItem',
+  inject:['eventBus'],
   data(){
     return{
       open:false
@@ -21,12 +22,36 @@ export default {
     title:{
       type:String,
       required:true
+    },
+    name:{
+      type:String,
+      required:true
     }
   },
   methods:{
     toggle(){
-      this.open = !this.open
+      if(this.open){
+        this.open = true
+      }else{
+        this.eventBus.$emit('update:selected',this.name)
+      }
+    },
+    close(){
+      this.open =false
+    },  
+    show(){
+      this.open = true
     }
+  },
+  mounted(){
+    this.eventBus.$on('update:selected',(name)=>{
+      name!==this.name?this.close():this.show()
+      // if(name!==this.name){
+      //   this.close()
+      // }else{
+      //   this.show()
+      // }
+    })
   }
 }
 </script>

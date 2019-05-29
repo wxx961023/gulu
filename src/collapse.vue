@@ -5,12 +5,30 @@
 </template>
 
 <script>
+import Vue from 'vue'
 export default {
   name:'GuluCollapse',
-  data(){
+  data() {
     return {
-
+      eventBus:new Vue()
     }
+  },
+  props:{
+    single:{
+      type:Boolean,
+      default:false
+    },
+    selected:{
+      type:String
+    }
+  },
+  provide(){
+    return{
+      eventBus:this.eventBus
+    }
+  },
+  mounted(){
+    this.eventBus.$emit('update:selected',this.selected)
   }
 }
 </script>
