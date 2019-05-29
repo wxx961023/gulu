@@ -4,7 +4,7 @@
     <g-icon class="icon" v-if="icon && !loading" :name="icon"></g-icon>
     <g-icon class="loading icon" v-if="loading" name="loading"></g-icon>
     <div class="g-button-content">
-      <slot/>
+    <slot/>
     </div>
   </button>
 </template>
