@@ -1,11 +1,12 @@
 <template>
   <div>
-    <g-button>默认按钮</g-button>
-    <g-button icon="settings">默认按钮</g-button>
-    <g-button :loading="true">默认按钮</g-button>
-    <g-button disabled>默认按钮</g-button>
-
-    <pre><code>{{content}}</code></pre>
+    <g-button>按钮</g-button>
+    <g-button icon="settings">设置</g-button>
+    <g-button icon="settings" icon-position="right">设置</g-button>
+    <g-button icon="thumbs-up">点赞</g-button>
+    <g-button :loading="true">加载中</g-button>
+    <g-button icon="download">下载</g-button>
+    <g-button disabled>禁止点击</g-button>
   </div>
 </template>
 
@@ -14,18 +15,7 @@
   export default {
     components:{
       'g-button':Button
-    },
-    data(){
-      return{
-        content:`    
-          <g-button>默认按钮</g-button>
-          <g-button icon="settings">默认按钮</g-button>
-          <g-button :loading="true">默认按钮</g-button>
-          <g-button disabled>默认按钮</g-button>
-        `.replace(/\t+| +/g, '').trim()
-      }
-    }
-    
+    },  
   }
 </script>
-
+ 

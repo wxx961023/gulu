@@ -1,7 +1,7 @@
 <template>
   <div class="tabs-pane" :class="classes" v-show="active">
     <slot></slot>
-  <div>
+  </div>
 </template>
 
 <script>

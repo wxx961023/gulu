@@ -1,6 +1,6 @@
 <template>
-  <div class="col" :class="colClass" :style="colStyle" >
-    <div style="border:1px solid red">
+  <div class="col-wrapper" :class="colClass" :style="colStyle" >
+    <div class="col">
       <slot></slot>
     </div>
   </div>
@@ -75,8 +75,17 @@
 </script>
 
 <style scoped lang="scss">
-  .col{
-    // width: 50%;
+  .col-wrapper {
+    width: 50%;
+    height: 100px;
+  }
+  .col {
+    border: 1px solid green;
+    height: 100%;
+    background: pink;
+  }
+
+  .col-wrapper{
     $class-prefix:col-;
     @for $n from 1 through 24{
       &.#{$class-prefix}#{$n}{

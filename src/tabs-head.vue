@@ -6,7 +6,7 @@
     <div class="action-wrapper">
       <slot name="actions"></slot>
     </div>
-  <div>
+  </div>
 </template>
 
 <script>
@@ -22,9 +22,9 @@ export default {
     this.eventBus.$on('update:selected',(item,vm)=>{
       this.x = true
       //新增一个'更新UI任务'到任务队列中
-      let {width,left} = vm.$el.getBoundingClientRect();
+      let {width, height, top, left} = vm.$el.getBoundingClientRect();
       this.$refs.line.style.width = `${width}px`
-      this.$refs.line.style.transform = `translateX(${left}px)`
+      this.$refs.line.style.left = left + - 417.5+'px' 
     })
   },
 }

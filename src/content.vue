@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="layout-content">
     <slot></slot>
   </div>
 </template>
@@ -16,7 +16,11 @@ export default {
 </script>
 
 <style lang="scss"  scoped>
-  .content{
+  .layout-content{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #bbbbbb;
     flex-grow:1;
   }
 </style>

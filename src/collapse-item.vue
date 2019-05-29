@@ -1,68 +1,102 @@
 <template>
-  <div class="collapseItem">
-    <div class="title" @click="toggle" :data-name="name">
-      {{title}}
+    <div class="item">
+        <div class="title-wrapper" @click="toggle">
+            <d-icon class="icon" name="arrow-open" v-if="arrow && isOpen "></d-icon>
+            <d-icon class="icon" name="arrow-close" v-if="arrow && !isOpen"></d-icon>
+            <div class="title">{{title}}</div>
+        </div>
+        <div v-if="isOpen" class="content">
+            <slot></slot>
+        </div>
     </div>
-    <div class="content" ref="content" v-if="open">
-      <slot></slot>
-    </div>
-  </div>
+
 </template>
 
 <script>
-  export default {
-    name: "GuluCollapseItem",
-    props: {
-      title: {
-        type: String,
-        required: true
-      },
-      name: {
-        type: String,
-        required: true
-      }
-    },
-    data () {
-      return {
-        open: false,
-      }
-    },
-    inject: ['eventBus'],
-    mounted () {
-      this.eventBus && this.eventBus.$on('update:selected', (names) => {
-        if (names.indexOf(this.name) >= 0) {
-          this.open = true
-        } else {
-          this.open = false
+    import Icon from './icon'
+
+    export default {
+        name: "Collapse-item",
+        props: {
+            title: {
+                type: String,
+                required: true
+            },
+            name: {
+                type: String,
+                required: true
+            },
+
+        },
+        inject: ['eventBus'],
+        components: {
+            'd-icon': Icon
+        },
+        data() {
+            return {
+                isOpen: false,
+                arrow: false
+            }
+        },
+        methods: {
+            toggle() {
+                if (!this.isOpen) {
+                    this.eventBus.$emit('addSelected', this.name)
+                } else if (this.isOpen) {
+                    this.eventBus.$emit('minusSelected', this.name)
+                }
+
+            }
+        },
+        mounted() {
+            this.eventBus.$on('update:selected', (names, arrow) => {
+                this.arrow = arrow
+                if (names.includes(this.name)) {
+                    this.isOpen = true
+                } else if (!names.includes(this.name)) {
+                    this.isOpen = false
+                }
+            })
         }
-      })
-    },
-    methods: {
-      toggle () {
-        if (this.open) {
-          this.eventBus && this.eventBus.$emit('update:removeSelected', this.name)
-        } else {
-          this.eventBus && this.eventBus.$emit('update:addSelected', this.name)
-        }
-      },
-    },
-  }
+    }
 </script>
 
 <style scoped lang="scss">
-  $grey: #ddd;
-  $border-radius: 4px;
-  .collapseItem {
-    > .title { border: 1px solid $grey; margin-top: -1px; margin-left: -1px; margin-right: -1px;
-      min-height: 32px; display: flex; align-items: center; padding: 0 8px;
-      background: lighten($grey, 8%);
+    $collapse-font-size: 16px;
+    .item {
+        font-size: $collapse-font-size;
+
+        &:last-child {
+            > div:last-child {
+                border-radius: 4px;
+            }
+        }
+
     }
-    &:first-child {
-      > .title { border-top-left-radius: $border-radius; border-top-right-radius: $border-radius; }
+
+    .title-wrapper {
+        padding: 0 0.5em;
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid #999999;
+        cursor: pointer;
+
+        .title {
+            line-height: 32px;
+        }
+        .icon{
+            fill:#666666;
+            height: 8px;
+            width: 8px;
+            margin-right: 0.5em;
+        }
     }
-    &:last-child {
-      > .title:last-child { border-bottom-left-radius: $border-radius; border-bottom-right-radius: $border-radius; }
+
+    .content {
+        padding: 0 0.5em;
+        color: #999999;
+        border-bottom: 1px solid #999999;
     }
-    > .content { padding: 8px; }
-  }
+
+
 </style>

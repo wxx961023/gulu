@@ -1,5 +1,5 @@
 <template>
-  <div class="footer">
+  <div class="layout-footer">
     <slot></slot>
   </div>
 </template>
@@ -16,5 +16,12 @@ export default {
 </script>
 
 <style lang="scss"  scoped>
+  .layout-footer{
+    background: #888888;
+    height: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
 </style>

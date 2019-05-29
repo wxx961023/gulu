@@ -1,7 +1,7 @@
 <template>
   <div class="tabs-body">
     <slot></slot>
-  <div>
+  </div>
 </template>
 
 <script>

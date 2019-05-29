@@ -26,9 +26,14 @@ export default {
 
 <style lang="scss"  scoped>
   .layout{
+    height:60vh;
     display: flex;
-    flex-grow: 1;
-    flex-flow: column;
+    flex-direction: column;
+    width: 100%;
+    color:white;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
     &.hasSider{
       flex-direction:row;
     }

@@ -1,7 +1,7 @@
 <template>
   <div class="tabs">
     <slot></slot>
-  <div>
+  </div>
 </template>
 
 <script>
@@ -55,6 +55,7 @@ export default {
 
 <style lang='scss' scoped>
   .tabs{
-
+    display: flex;
+    flex-direction: column;
   }
 </style>

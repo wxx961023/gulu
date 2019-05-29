@@ -1,7 +1,7 @@
 <template>
   <div class="tabs-item" @click="onClick" :class="classes" :data-name="name">
     <slot></slot>
-  <div>
+  </div>
 </template>
 
 <script>

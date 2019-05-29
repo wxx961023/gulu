@@ -1,5 +1,5 @@
 <template>
-  <div class="header">
+  <div class="layout-header">
     <slot></slot>
   </div>
 </template>
@@ -16,5 +16,11 @@ export default {
 </script>
 
 <style lang="scss"  scoped>
-
+  .layout-header{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #333333;
+    height: 10%;
+  }
 </style>

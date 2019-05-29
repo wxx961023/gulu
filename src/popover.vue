@@ -1,209 +1,215 @@
 <template>
-  <div class="popover" ref="popover">
-    <div ref="contentWrapper" class="content-wrapper" v-if="visible"
-      :class="{[`position-${position}`]:true}"
-    >
-      <slot name="content"></slot>
+    <div class="pop">
+        <div class="pop-content" v-if="isOpen" ref="content" :class="popPosition">
+            <slot name="content"></slot>
+        </div>
+        <span class="button" ref="button">
+            <slot></slot>
+        </span>
     </div>
-    <span ref="triggerWrapper" style="display:inline-block">
-      <slot></slot>
-    </span>
-  <div>
 </template>
 
 <script>
-export default {
-  name:'GuluPopover',
-  data(){
-    return {visible:false}
-  },
-  props:{
-    position:{
-      type:String,
-      default:'top',
-      validator(value){
-        return ['top','bottom','left','right'].indexOf(value)>=0
-      }
-    },
-    trigger:{
-      type:String,
-      default:'click',
-      validator(value){
-        return ['click','hover'].indexOf(value)>=0
-      }
-    }
-  },
-  mounted(){
-    if(this.trigger === 'click'){
-      this.$refs.popover.addEventListener('click',this.onClick)
-    }else{
-      this.$refs.popover.addEventListener('mouseenter',this.open)
-      this.$refs.popover.addEventListener('mouseleave',this.close)
-    }
-  },
-  destroyed () {
-    if (this.trigger === 'click') {
-      this.$refs.popover.removeEventListener('click', this.onClick)
-    } else {
-      this.$refs.popover.removeEventListener('mouseenter', this.open)
-      this.$refs.popover.removeEventListener('mouseleave', this.close)
-    }
-  },
-  computed:{
-    openEvent(){
-      return this.trigger = this.trigger === 'click'?'click':'mouseenter'
-    },
-    closeEvent(){
-      return this.trigger = this.trigger === 'click'?'click':'mouseleave'
-    }
-  },
-  methods:{
-    positionContent(){
-      const {contentWrapper,triggerWrapper} = this.$refs
-      document.body.appendChild(this.$refs.contentWrapper)
-      const {height:height2} = contentWrapper.getBoundingClientRect()
-      const {width,height,top,left} = triggerWrapper.getBoundingClientRect()
-      let positions = {
-        top:{
-          top: top + window.scrollY ,
-          left: left + window.scrollX
+    export default {
+        name: "Popover",
+        data() {
+            return {
+                isOpen: false
+            }
         },
-        bottom:{
-          top: top + height + window.scrollY ,
-          left: left + window.scrollX
+        props: {
+            position: {
+                type: String,
+                default: 'top'
+            },
+            trigger: {
+                type: String,
+                default: 'click'
+            }
         },
-        left:{
-          top: top + window.scrollY + (height-height2)/2,
-          left: left + window.scrollX
+        computed: {
+            popPosition() {
+                return `position-${this.position}`
+            }
         },
-        right:{
-          top: top + window.scrollY + (height-height2)/2,
-          left: left + window.scrollX + width
+        mounted() {
+            if (this.trigger === 'click') {
+                this.$refs.button.addEventListener('click', this.toggle)
+            } else if (this.trigger === 'hover') {
+                console.log(this.$el);
+                this.$refs.button.addEventListener('mouseenter', this.open)
+                this.$refs.button.addEventListener('mouseleave', this.close)
+            }
         },
-      }
-      contentWrapper.style.left = positions[this.position].left + 'px'
-      contentWrapper.style.top = positions[this.position].top + 'px'
-    },
-    onClickDocument(e){
-      if(this.$refs.popover && 
-        (this.$refs.popover === e.target || this.$refs.popover.contains(e.target))
-      ){return}
-      if(this.$refs.contentWrapper &&
-        (this.$refs.contentWrapper === e.target || this.$refs.contentWrapper.contains(e.target))
-      ){return}
-      this.close()
-    },
-    //高内聚，低耦合
-    open(){
-      this.visible = true
-      this.$nextTick(()=>{
-        this.positionContent()
-        document.addEventListener('click',this.onClickDocument)
-      })
-    },
-    close(){
-      this.visible = false
-      document.removeEventListener('click',this.onClickDocument)
-    },
+        methods: {
+            toggle() {
+                if (!this.isOpen) {             //轮子中不能阻止冒泡!!!
+                    this.open()
+                    document.addEventListener('click', this.documentListener)
+                } else if (this.isOpen) {
+                    this.close()
+                }
+            },
+            documentListener: function (e) {
+                if (!this.$refs.button.contains(e.target)
+                    && !this.$refs.content.contains(e.target)) {
+                    this.close()
+                }
+            },
+            open() {
+                this.isOpen = true
+                this.$nextTick(() => {    //处理渲染导致的异步
+                    document.body.appendChild(this.$refs.content)
+                    this.setPosition()
+                })
 
-    onClick(event){
-      if(this.$refs.triggerWrapper.contains(event.target)){
-        if(this.visible === true){
-          this.close()
-        }else{
-          this.open()
-        }
-      }
+            },
+            close() {
+                this.isOpen = false
+                if (this.trigger === 'click') {
+                    document.removeEventListener('click', this.documentListener)
+                }
+            },
+            setPosition() {
+                let {width, height, top, left} = this.$refs.button.getBoundingClientRect()
+                let coordinate = {
+                    top: {
+                        top: top + scrollY + 'px',
+                        left: left + scrollX + 'px'
+                    },
+                    bottom: {
+                        top: top + scrollY + height + 'px',
+                        left: left + scrollX + 'px'
+                    },
+                    left: {
+                        top: top + scrollY + 'px',
+                        left: left + scrollX + 'px'
+                    },
+                    right: {
+                        top: top + scrollY + 'px',
+                        left: left + scrollX + width + 'px'
+                    },
+                }
+
+                this.$refs.content.style.top = coordinate[this.position].top
+                this.$refs.content.style.left = coordinate[this.position].left
+
+            }
+        },
     }
-  }
-}
 </script>
 
-<style lang="scss" scoped>
-  $border-color:#333;
-  $border-radius:4px;
-  .popover{
-    display: inline-block;
-    vertical-align:top;
-    position: relative;
-  }
-  .content-wrapper{
-    position: absolute;
-    border: $border-color;
-    border-radius: $border-radius;
-    padding: 0.5em 1em;
-    background: white;
-    border: 1px solid black;
-    filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.5));
-    max-width: 20em;
-    word-break: break-all;
-    &::before,&::after{
-      content: '';
-      position: absolute;
-      display: block;
-      width: 0;
-      height: 0;
-      border: 10px solid transparent;
-    }    
-    &.position-top{
-      transform: translateY(-100%);
-      margin-top: -10px;
-      &::before{
-      border-top-color: black;
-      border-bottom:none;
-      top: 100%;
-      }
-      &::after{
-        border-bottom:none;
-        border-top-color: white;
-        top: calc(100% - 1px);
-      }
+<style scoped lang="scss">
+    $border-color: #333;
+    .pop {
+        display: inline-block;
+        vertical-align: middle;
+
+        .button {
+            display: inline-block;
+        }
     }
-    &.position-bottom{
-      margin-top: 10px;
-      &::before{
-        border-bottom-color: black;
-        border-top:none;
-        bottom: 100%;
-      }
-      &::after{
-        border-bottom-color: white;
-        border-top:none;
-        bottom: calc(100% - 1px);
-      }
+
+    .pop-content {
+        border: 1px solid $border-color;
+        border-radius: 4px;
+        background: white;
+        display: inline-block;
+        position: absolute;
+        max-width: 15.2em;
+        font-size: 14px;
+        padding: 0.5em 0.5em;
+        word-break: break-all;
+
+        &::before {
+            content: '';
+            border: 10px solid transparent;
+            position: absolute;
+        }
+
+        &::after {
+            content: '';
+            border: 10px solid transparent;
+            position: absolute;
+        }
+
+        &.position-top {
+            transform: translateY(-100%);
+            margin-top: -10px;
+            filter: drop-shadow(1px 1px 3px rgba(0, 0, 0, 0.5));
+
+            &::before {
+                top: 100%;
+                border-top-color: $border-color;
+                border-bottom: none;
+            }
+
+            &::after {
+                top: calc(100% - 1px);
+                border-top-color: white;
+                border-bottom: none;
+            }
+        }
+
+        &.position-bottom {
+            margin-top: 10px;
+            filter: drop-shadow(-1px 1px 3px rgba(0, 0, 0, 0.5));
+
+            &::before {
+                top: 0%;
+                transform: translateY(-100%);
+                border-bottom-color: $border-color;
+                border-top: none;
+            }
+
+            &::after {
+                top: calc(0% + 1px);
+                transform: translateY(-100%);
+                border-bottom-color: white;
+                border-top: none;
+            }
+        }
+
+        &.position-left {
+            margin: 0 -10px;
+            filter: drop-shadow(1px -1px 3px rgba(0, 0, 0, 0.5));
+            transform: translateX(-100%);
+
+            &::before {
+                top: 0.5em;
+                left: 100%;
+                border-left-color: $border-color;
+                border-right: none;
+            }
+
+            &::after {
+                top: 0.5em;
+                left: calc(100% - 1px);
+                border-left-color: white;
+                border-right: none;
+            }
+        }
+
+        &.position-right {
+            margin: 0 10px;
+            filter: drop-shadow(1px 1px 3px rgba(0, 0, 0, 0.5));
+
+            &::before {
+                top: 0.5em;
+                left: 0;
+                transform: translateX(-100%);
+                border-right-color: $border-color;
+                border-left: none;
+            }
+
+            &::after {
+                top: 0.5em;
+                left: calc(0% + 1px);
+                transform: translateX(-100%);
+                border-right-color: white;
+                border-left: none;
+
+            }
+        }
     }
-    &.position-left{
-      transform: translateX(-100%);
-      margin-left: -10px;
-      &::before,&::after{
-        border-right:none;
-        transform:translateY(-50%);
-        top:50%;
-      }
-      &::before{
-        border-left-color: black;
-        left:100%;
-      }
-      &::after{
-        border-left-color: white;
-        left:calc(100% - 1px);
-      }
-    }
-    &.position-right{
-      margin-left: 10px;
-      &::before,&::after{
-        transform:translateY(-50%);
-        border-left:none;
-        top:50%;
-      }
-      &::before{
-        border-right-color: black;
-        right:100%;
-      }
-      &::after{
-        border-right-color: white;
-        right:calc(100% - 1px);
-      }
-    }
-  }
 </style>

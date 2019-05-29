@@ -2,7 +2,7 @@
   <transition name="slide">
     <div class="sider" v-if="visible">
       <slot></slot>
-      <button @click="visible=false">close</button>
+      <!-- <button @click="visible=false">close</button> -->
     </div>
   </transition>
 </template>
@@ -20,6 +20,11 @@ export default {
 
 <style lang='scss' scoped>
 .sider{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20%;
+  background: #666;
   position: relative;
   > button {
     position: absolute;
