@@ -33,6 +33,7 @@
     "vue-hot-reload-api": "^2.3.3"
   },
   "devDependencies": {
+    "vue-server-renderer": "^2.6.10",
     "@vue/component-compiler-utils": "^3.0.0",
     "chai": "^4.2.0",
     "karma": "^4.1.0",
