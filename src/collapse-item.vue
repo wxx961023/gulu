@@ -1,6 +1,6 @@
 <template>
   <div class="collapseItem">
-    <div class="title" @click="toggle">
+    <div class="title" @click="toggle" :data-name="name">
       {{title}}
     </div>
     <div class="content" ref="content" v-if="open">
@@ -10,50 +10,43 @@
 </template>
 
 <script>
-export default {
-  name:'GuluCollapseItem',
-  inject:['eventBus'],
-  data(){
-    return{
-      open:false
-    }
-  },
-  props:{
-    title:{
-      type:String,
-      required:true
-    },
-    name:{
-      type:String,
-      required:true
-    }
-  },
-  methods:{
-    toggle(){
-      if(this.open){
-        this.open = true
-      }else{
-        this.eventBus.$emit('update:selected',this.name)
+  export default {
+    name: "GuluCollapseItem",
+    props: {
+      title: {
+        type: String,
+        required: true
+      },
+      name: {
+        type: String,
+        required: true
       }
     },
-    close(){
-      this.open =false
-    },  
-    show(){
-      this.open = true
-    }
-  },
-  mounted(){
-    this.eventBus.$on('update:selected',(name)=>{
-      name!==this.name?this.close():this.show()
-      // if(name!==this.name){
-      //   this.close()
-      // }else{
-      //   this.show()
-      // }
-    })
+    data () {
+      return {
+        open: false,
+      }
+    },
+    inject: ['eventBus'],
+    mounted () {
+      this.eventBus && this.eventBus.$on('update:selected', (names) => {
+        if (names.indexOf(this.name) >= 0) {
+          this.open = true
+        } else {
+          this.open = false
+        }
+      })
+    },
+    methods: {
+      toggle () {
+        if (this.open) {
+          this.eventBus && this.eventBus.$emit('update:removeSelected', this.name)
+        } else {
+          this.eventBus && this.eventBus.$emit('update:addSelected', this.name)
+        }
+      },
+    },
   }
-}
 </script>
 
 <style scoped lang="scss">

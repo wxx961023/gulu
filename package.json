@@ -6,7 +6,9 @@
   "scripts": {
     "start": "parcel index.html --no-cache",
     "dev-test": "parcel watch test/* --no-cache & karma start",
-    "test": "parcel build test/* --no-cache --no-minify && karma start --single-run"
+    "test": "parcel build test/* --no-cache --no-minify && karma start --single-run",
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
   },
   "repository": {
     "type": "git",
@@ -24,6 +26,8 @@
   "homepage": "https://github.com/wxx961023/gulu#readme",
   "dependencies": {
     "chai-spies": "^1.0.0",
+    "node-sass": "^4.12.0",
+    "sass-loader": "^7.1.0",
     "ue": "0.0.0",
     "vue": "^2.6.10",
     "vue-hot-reload-api": "^2.3.3"
@@ -42,7 +46,8 @@
     "sass": "^1.20.1",
     "sinon": "^7.3.2",
     "sinon-chai": "^3.3.0",
-    "vue-template-compiler": "^2.6.10"
+    "vue-template-compiler": "^2.6.10",
+    "vuepress": "^0.14.11"
   },
   "alias": {
     "vue": "./node_modules/vue/dist/vue.common.js"
