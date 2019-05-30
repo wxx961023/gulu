@@ -1,5 +1,5 @@
 # 轱辘 - 一个 Vue UI 组件
-[![Build Status](https://travis-ci.org/wxx961023/gulu.svg?branch=master)](https://travis-ci.org/wxx961023/gulu)
+[![Build Status](https://travis-ci.org/travis-ci/travis-web.svg?branch=master)](https://travis-ci.org/travis-ci/travis-web)
 ## 介绍
 
 这是我在学习 Vue 过程中，做的一个 UI 框架，希望对你有用。
