@@ -24,7 +24,7 @@ export default {
       //新增一个'更新UI任务'到任务队列中
       let {width, height, top, left} = vm.$el.getBoundingClientRect();
       this.$refs.line.style.width = `${width}px`
-      this.$refs.line.style.left = left + - 417.5+'px' 
+      this.$refs.line.style.left = `${width}px` 
     })
   },
 }
