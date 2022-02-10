@@ -26,7 +26,7 @@
   "homepage": "https://github.com/wxx961023/gulu#readme",
   "dependencies": {
     "chai-spies": "^1.0.0",
-    "node-sass": "^4.12.0",
+    "node-sass": "^7.0.0",
     "sass-loader": "^7.1.0",
     "ue": "0.0.0",
     "vue": "^2.6.10",
